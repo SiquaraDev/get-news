@@ -1,6 +1,5 @@
 import { Client } from "pg";
 
-// Cria uma conexão com o DB e lança uma query, depois encerra a conexão com o DB e retorna a resposta do servidor
 async function query(queryObject) {
   const client = new Client({
     host: process.env.POSTGRES_HOST,
@@ -28,11 +27,12 @@ export default {
 };
 
 function getSSLValue() {
+  // Caso o DB possua um certificado próprio, retorna esse certificado
   if (process.env.POSTGRES_CA) {
     return {
       ca: process.env.POSTGRES_CA,
     };
   }
-
+  // Se estiver em modo desenvolvimento não ativa o SSL
   return process.env.NODE_ENV === "development" ? false : true;
 }
